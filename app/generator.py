@@ -11,6 +11,8 @@ def build_markov_model(corpus):
         model.setdefault(syllables[-1], []).append('__end__')
         for i in range(len(syllables) - 1):
             model.setdefault(syllables[i], []).append(syllables[i + 1])
+    for key in model:
+        model[key] = list(set(model[key]))
     return model
 
 def generate_from_model(model, max_syll=4):
