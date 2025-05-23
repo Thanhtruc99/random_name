@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-url = "https://probablyhelpful.com/most_common_surnames.htm"
+url = "https://probablyhelpful.com/most_common_surnames.html"
 headers = {"User-Agent": "Mozilla/5.0"}
 
 res = requests.get(url, headers=headers)
@@ -17,7 +17,7 @@ for row in soup.select("table tr"):
             surnames.append(nom)
 
 # Sauvegarde dans un fichier texte
-with open("noms_famille.txt", "w") as f:
+with open("data/noms_famille.txt", "w") as f:
     for nom in surnames:
         f.write(nom + "\n")
 
