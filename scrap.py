@@ -1,32 +1,56 @@
 import requests
 from bs4 import BeautifulSoup
 
-url = "https://www.ssa.gov/oact/babynames/decades/century.html"
 headers = {
     "User-Agent": "Mozilla/5.0"
 }
 
-res = requests.get(url, headers=headers)
-soup = BeautifulSoup(res.content, "html.parser")
-
-table = soup.find("table", {"class": "t-stripe"})
-rows = table.find_all("tr")[1:]
-
 prenoms_garcons = []
 prenoms_filles = []
 
-for row in rows:
-    cols = row.find_all("td")
-    if len(cols) >= 5:
-        prenoms_garcons.append(cols[1].text.strip())
-        prenoms_filles.append(cols[3].text.strip())
+boys_urls = [
+    "https://probablyhelpful.com/baby_names/boys250.html",
+    "https://probablyhelpful.com/baby_names/boys500.html",
+    "https://probablyhelpful.com/baby_names/boys750.html",
+    "https://probablyhelpful.com/baby_names/boys1000.html"
+]
 
-# Sauvegarde dans des fichiers texte
-with open("prenoms_garcons.txt", "w") as f:
+girls_urls = [
+    "https://probablyhelpful.com/baby_names/girls250.html",
+    "https://probablyhelpful.com/baby_names/girls500.html",
+    "https://probablyhelpful.com/baby_names/girls750.html",
+    "https://probablyhelpful.com/baby_names/girls1000.html"
+]
+
+for url in boys_urls:
+    res = requests.get(url, headers=headers)
+    soup = BeautifulSoup(res.content, "html.parser")
+    rows = soup.find_all("tr")[1:]  
+    for row in rows:
+        cols = row.find_all("td")
+        if cols:
+            name = cols[0].text.strip()
+            prenoms_garcons.append(name)
+
+for url in girls_urls:
+    res = requests.get(url, headers=headers)
+    soup = BeautifulSoup(res.content, "html.parser")
+    rows = soup.find_all("tr")[1:] 
+    for row in rows:
+        cols = row.find_all("td")
+        if cols:
+            name = cols[0].text.strip()
+            prenoms_filles.append(name)
+
+# Supprimer les doublons et trier
+prenoms_garcons = set(prenoms_garcons)
+prenoms_filles = set(prenoms_filles)
+
+with open("data/prenoms_garcons.txt", "w") as f:
     for prenom in prenoms_garcons:
         f.write(prenom + "\n")
 
-with open("prenoms_filles.txt", "w") as f:
+with open("data/prenoms_filles.txt", "w") as f:
     for prenom in prenoms_filles:
         f.write(prenom + "\n")
 
