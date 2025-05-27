@@ -44,7 +44,7 @@ def generer_noms():
 
 @main.route("/generer_tout")
 def generer_tout():
-    genre = session.get("genre", "mixte")
+    genre = request.args.get("genre", "mixte")
     count = int(request.args.get("nombre", 10))
     raw_corpus = load_names(genre)
     model = build_markov_model(raw_corpus)
@@ -52,5 +52,7 @@ def generer_tout():
     noms = [random.choice(surnames) for _ in range(count)]
     session["prenoms"] = prenoms
     session["noms"] = noms
+    session["genre"] = genre
+    session["count"] = count
     names = [f"{p} {n}" for p, n in zip(prenoms, noms)]
     return render_template("index.html", names=names, genre=genre, count=count)

@@ -11,5 +11,7 @@ function genererNoms() {
 }
 
 function genererTout() {
-  window.location.href = "/generer_tout";
+  const genre = document.getElementById('genre').value;
+  const nombre = document.getElementById('nombre').value;
+  window.location.href = `/generer_tout?nombre=${nombre}&genre=${genre}`;
 }
