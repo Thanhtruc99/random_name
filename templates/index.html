@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+<main>
 
 <form method="get" action="/" style="margin-bottom: 20px;">
   <label for="genre">Genre :</label>
@@ -17,11 +18,22 @@
 
   <label for="nombre" style="margin-left: 20px;">Nombre :</label>
   <input type="number" name="nombre" id="nombre" min="1" max="100" value="{{ count }}"/>
+
+  <fieldset class="filters" style="margin-top: 15px;">
+    <legend>Filtres :</legend>
+    <label><input type="checkbox" name="court" {% if court %}checked{% endif %}> Prénom court (3–5 lettres)</label><br>
+    <label><input type="checkbox" name="long" {% if long %}checked{% endif %}> Prénom long (6+ lettres)</label><br>
+    <label><input type="checkbox" name="voyelle" {% if voyelle %}checked{% endif %}> Terminer prénom par une voyelle</label><br>
+
+    <label><input type="checkbox" name="court_nom" {% if court_nom %}checked{% endif %}> Nom de famille court (3–5 lettres)</label><br>
+    <label><input type="checkbox" name="long_nom" {% if long_nom %}checked{% endif %}> Nom de famille long (6+ lettres)</label><br>
+    <label><input type="checkbox" name="voyelle_nom" {% if voyelle_nom %}checked{% endif %}> Terminer nom par une voyelle</label><br>
+  </fieldset>
 </form>
 
 <h1>Noms générés</h1>
 <div style="display: flex; justify-content: center; gap: 50px;">
-  <div>
+  <div class="result-box">
     <h3>Prénoms</h3>
     <ul>
     {% for name in names %}
@@ -29,7 +41,7 @@
     {% endfor %}
     </ul>
   </div>
-  <div>
+  <div class="result-box">
     <h3>Noms de famille</h3>
     <ul>
     {% for name in names %}
@@ -48,5 +60,6 @@
 </div>
 
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</main>
 </body>
 </html>
