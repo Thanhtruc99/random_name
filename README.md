@@ -45,6 +45,6 @@ A simple web application that generates names randomly using a **Markov** model,
   │  
   ├── run.py                  # Main entry point  
   ├── scrap.py                # Name scraping script  
-  ├── NOMS.py                 # Testing or processing script  
+  ├── NOMS.py                 # Family name scraping script  
   ├── ameliorer.txt           # Improvement notes  
   └── README.md  
