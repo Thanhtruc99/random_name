@@ -42,5 +42,5 @@ def is_valid(name):
     return (
         re.search(r'[aeiouy]', name) and
         not re.search(r'[bcdfghjklmnpqrstvwxyz]{4,}', name) and
-        4 <= len(name) <= 12
+        3 <= len(name) <= 12
     )
