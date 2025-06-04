@@ -2,11 +2,10 @@ from flask import Blueprint, render_template, request, session
 import random
 
 from .data_loader import load_names, load_surnames
-from .generator import generate_name, generate_full_name, build_markov_model
+from .generator import generate_name, build_markov_model, generate_surname
 
 main = Blueprint("main", __name__)
 
-surnames = load_surnames()
 
 @main.route("/")
 def index():
@@ -101,7 +100,7 @@ def generer_noms():
 
     noms = []
     while len(noms) < count:
-        n = random.choice(surnames)
+        n = generate_surname()
         if filtrer_nom(n):
             noms.append(n)
 
@@ -162,7 +161,7 @@ def generer_tout():
 
     noms = []
     while len(noms) < count:
-        n = random.choice(surnames)
+        n = generate_surname()
         if filtrer_nom(n):
             noms.append(n)
 

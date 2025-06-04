@@ -55,3 +55,25 @@ with open("data/prenoms_filles.txt", "w") as f:
         f.write(prenom + "\n")
 
 print(f"{len(prenoms_garcons)} prénoms garçons et {len(prenoms_filles)} prénoms filles écrits dans les fichiers.")
+
+
+url = "https://probablyhelpful.com/most_common_surnames.html"
+headers = {"User-Agent": "Mozilla/5.0"}
+
+res = requests.get(url, headers=headers)
+soup = BeautifulSoup(res.content, "html.parser")
+
+surnames = []
+
+for row in soup.select("table tr"):
+    cells = row.find_all("td")
+    if len(cells) >= 1:
+        nom = cells[0].text.strip()
+        if nom.isalpha():
+            surnames.append(nom)
+
+with open("data/noms_famille.txt", "w") as f:
+    for nom in surnames:
+        f.write(nom + "\n")
+
+print(f"{len(surnames)} noms de famille trouvés.")

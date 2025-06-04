@@ -1,65 +1,82 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Générateur de Noms</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-<main>
+  <div class="container">
+    <h1>Générateur de Prénoms & Noms</h1>
 
-<form method="get" action="/" style="margin-bottom: 20px;">
-  <label for="genre">Genre :</label>
-  <select name="genre" id="genre">
-    <option value="mixte" {% if genre == "mixte" %}selected{% endif %}>Mixte</option>
-    <option value="garcon" {% if genre == "garcon" %}selected{% endif %}>Garçon</option>
-    <option value="fille" {% if genre == "fille" %}selected{% endif %}>Fille</option>
-  </select>
+    <form action="/" method="get" class="form">
+      <div class="options">
+        <label for="genre">Genre :</label>
+        <select name="genre" id="genre">
+          <option value="mixte" {% if genre == "mixte" %}selected{% endif %}>Mixte</option>
+          <option value="fille" {% if genre == "fille" %}selected{% endif %}>Fille</option>
+          <option value="garcon" {% if genre == "garcon" %}selected{% endif %}>Garçon</option>
+        </select>
 
-  <label for="nombre" style="margin-left: 20px;">Nombre :</label>
-  <input type="number" name="nombre" id="nombre" min="1" max="100" value="{{ count }}"/>
+        <label for="nombre">Nombre :</label>
+        <input type="number" name="nombre" id="nombre" value="{{ count }}" min="1" max="100" />
+      </div>
 
-  <fieldset class="filters" style="margin-top: 15px;">
-    <legend>Filtres :</legend>
-    <label><input type="checkbox" name="court" {% if court %}checked{% endif %}> Prénom court (3–5 lettres)</label><br>
-    <label><input type="checkbox" name="long" {% if long %}checked{% endif %}> Prénom long (6+ lettres)</label><br>
-    <label><input type="checkbox" name="voyelle" {% if voyelle %}checked{% endif %}> Terminer prénom par une voyelle</label><br>
+      <fieldset class="filters">
+        <legend>Filtres :</legend>
+        <div class="filter-row">
+          <label><input type="checkbox" name="court" {% if court %}checked{% endif %}/> Prénom court (3–5 lettres)</label>
+          <label><input type="checkbox" name="long" {% if long %}checked{% endif %}/> Prénom long (6+ lettres)</label>
+          <label><input type="checkbox" name="voyelle" {% if voyelle %}checked{% endif %}/> Prénom finit par voyelle</label>
+        </div>
+        <div class="filter-row">
+          <label><input type="checkbox" name="court_nom" {% if court_nom %}checked{% endif %}/> Nom court (3–5 lettres)</label>
+          <label><input type="checkbox" name="long_nom" {% if long_nom %}checked{% endif %}/> Nom long (6+ lettres)</label>
+          <label><input type="checkbox" name="voyelle_nom" {% if voyelle_nom %}checked{% endif %}/> Nom finit par voyelle</label>
+        </div>
+      </fieldset>
 
-    <label><input type="checkbox" name="court_nom" {% if court_nom %}checked{% endif %}> Nom de famille court (3–5 lettres)</label><br>
-    <label><input type="checkbox" name="long_nom" {% if long_nom %}checked{% endif %}> Nom de famille long (6+ lettres)</label><br>
-    <label><input type="checkbox" name="voyelle_nom" {% if voyelle_nom %}checked{% endif %}> Terminer nom par une voyelle</label><br>
-  </fieldset>
-</form>
+      <div class="buttons">
+        <button type="button" onclick="genererPrenoms()">Générer prénoms</button>
+        <button type="button" onclick="genererTout(event)">Tout générer</button>
+        <button type="button" onclick="genererNoms()">Générer noms</button>
+      </div>
+    </form>
 
-<h1>Noms générés</h1>
-<div style="display: flex; justify-content: center; gap: 50px;">
-  <div class="result-box">
-    <h3>Prénoms</h3>
-    <ul>
-    {% for name in names %}
-        <li>{{ name.split()[0] }}</li>
-    {% endfor %}
-    </ul>
+    <div class="resultat">
+      {% if names %}
+        <h2>Résultats :</h2>
+        <div class="result-columns">
+          <div>
+            <h3>Prénoms</h3>
+            <ul>
+              {% for name in names %}
+                <li>
+                  <span class="name-item">{{ name.split()[0] }}</span>
+                  <button class="copy-btn" onclick="copySingleName(this)">📋</button>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div>
+            <h3>Noms de famille</h3>
+            <ul>
+              {% for name in names %}
+                <li>
+                  <span class="name-item">{{ name.split()[1] }}</span>
+                  <button class="copy-btn" onclick="copySingleName(this)">📋</button>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        <button onclick="copyNames()">📋 Copier les noms</button>
+      {% endif %}
+    </div>
   </div>
-  <div class="result-box">
-    <h3>Noms de famille</h3>
-    <ul>
-    {% for name in names %}
-        <li>{{ name.split()[1] }}</li>
-    {% endfor %}
-    </ul>
-  </div>
-</div>
 
-<div>
-  <a href="#" onclick="genererPrenoms()" class="button">Générer prénoms</a>
-  <a href="#" onclick="genererNoms()" class="button">Générer noms de famille</a>
-  <div style="margin-top: 20px;">
-      <a href="#" class="button" onclick="genererTout(event)">Tout générer</a>
-  </div>
-</div>
-
-<script src="{{ url_for('static', filename='js/script.js') }}"></script>
-</main>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

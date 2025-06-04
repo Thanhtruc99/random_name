@@ -1,6 +1,10 @@
 import random
 from .syllables import split_syllables, phonetic_mutate, syllable_structure, is_valid
 
+import nltk
+from nltk.corpus import words
+
+# ----------------------------Prénom-------------------------------
 def build_markov_model(corpus):
     model = {'__start__': [], '__end__': []}
     for name in corpus:
@@ -43,7 +47,54 @@ def generate_name(model):
             return name
     return "Nameless"
 
-def generate_full_name(model):
-    prenom = generate_name(model)
-    nom = random.choice(surnames)
-    return f"{prenom} {nom}"
+# ----------------------------Nom famille-------------------------------
+nltk.download('words', quiet=True)
+english_words = set(words.words())
+
+# Lire les données du fichier
+with open("data/noms_famille.txt", "r") as f:
+    base_surnames = [line.strip().capitalize() for line in f if line.strip()]
+
+with open("data/prenoms_garcons.txt", "r") as f:
+    first_names_m = [line.strip().capitalize() for line in f if line.strip()]
+
+with open("data/prenoms_filles.txt", "r") as f:
+    first_names_f = [line.strip().capitalize() for line in f if line.strip()]
+
+# Suffixes et préfixes courants
+suffixes = [
+    'man', 'ton', 'wood', 'field', 'worth', 'well', 'white', 'brown',
+    'er', 'smith', 'ham', 'ford', 'ley', 'brook', 'house', 'stone'
+]
+suffixes_son= [
+    'es', 'ez', 'sen', 'son', 'is', 'os'
+]
+prefixes = [
+    'Mac', "O'", 'Fitz', 'Mc',
+    'Ap', 'De', 'Del', 'Van', 'Von', 'St.', 'La', 'Le', 'Al'
+]
+
+# Filtrer les noms de famille significatifs
+meaningful_bases = [name for name in base_surnames if name.lower() in english_words]
+
+
+def generate_surname():
+    mode = random.choice(['meaning', 'suffix', 'prefix'])
+
+    if mode == 'meaning':
+        if meaningful_bases:
+            return random.choice(meaningful_bases)
+    elif mode == 'suffix':
+        if meaningful_bases:
+            return random.choice(meaningful_bases) + random.choice(suffixes)
+    elif mode == 'prefix':
+        base_name = random.choice(first_names_m + first_names_f)
+        return random.choice(prefixes) + base_name
+    elif mode == 'suffix_son':
+        base_name = random.choice(first_names_m)
+        return base_name + random.choice(suffixes_son)
+
+    # Fallback 
+    return random.choice(base_surnames)
+
+

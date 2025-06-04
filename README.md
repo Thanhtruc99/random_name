@@ -6,6 +6,7 @@ A simple web application that generates names randomly using a **Markov** model,
 
 - Python  
 - flask
+- NLTK
 
 ## Installation
   # Step 1: Create a virtual environment (recommended)
@@ -16,10 +17,13 @@ A simple web application that generates names randomly using a **Markov** model,
   # Step 2: Install Flask
   pip install flask
 
+  # Step 2: Install nltk
+  pip install nltk
+
 ## Running the Application
   python run.py  
-  Then open your browser and go to:  
-        http://127.0.0.1:5000/  
+  Then open your browser in your termminal:  
+        http://127.0.0.1:5003/  
 
 ## Project Structure
   random_name/  
@@ -44,7 +48,5 @@ A simple web application that generates names randomly using a **Markov** model,
   │   └── index.html  
   │  
   ├── run.py                  # Main entry point  
-  ├── scrap.py                # Name scraping script  
-  ├── NOMS.py                 # Family name scraping script  
-  ├── ameliorer.txt           # Improvement notes  
+  ├── scrap.py                # Name and family name scraping script  
   └── README.md  

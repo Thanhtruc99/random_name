@@ -33,6 +33,19 @@ function genererTout(event) {
   window.location.href = `/generer_tout?nombre=${nombre}&genre=${genre}&${filtres}`;
 }
 
+function copyNames() {
+  const prenoms = [...document.querySelectorAll('.result-columns div:first-child li .name-item')];
+  const noms = [...document.querySelectorAll('.result-columns div:last-child li .name-item')];
+
+  const lignes = prenoms.map((el, i) => {
+    const nom = noms[i] ? noms[i].textContent : "";
+    return `${el.textContent} ${nom}`;
+  });
+
+  navigator.clipboard.writeText(lignes.join('\n'));
+  alert("Prénoms + noms copiés !");
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   const courtCheckbox = document.querySelector('input[name="court"]');
   const longCheckbox = document.querySelector('input[name="long"]');
@@ -59,3 +72,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+function copySingleName(button) {
+  const text = button.previousElementSibling.textContent;
+  navigator.clipboard.writeText(text);
+  button.textContent = "✅";
+  setTimeout(() => button.textContent = "📋", 1000);
+}
